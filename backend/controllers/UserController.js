@@ -33,7 +33,7 @@ async function getUserById(req, res) {
     const user = await User.findOne({ where: { id: req.params.id } });
 
     // Cek user yg diambil ada apa engga
-    // Kalo user gada, masuk ke catch dengan message "User tidak ditemukan 😮" (400)
+    // Kalo user gada, masuk ke catch dengan message "Tidak boleh kosong!" (400)
     if (!user) {
       const error = new Error("User tidak ditemukan!");
       error.statusCode = 400;
