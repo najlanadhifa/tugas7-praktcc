@@ -1,6 +1,8 @@
 import { Sequelize } from "sequelize";
 import "dotenv/config";
 
+dotenv.config();
+
 //Bikin variabel yg nerima data yg dirahasiakan
 const DB_NAME = process.env.DB_NAME;
 const DB_USERNAME = process.env.DB_USERNAME;
