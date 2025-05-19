@@ -1,39 +1,29 @@
-import jwt from "jsonwebtoken";
+// import jwt from "jsonwebtoken";
 
-export const verifyToken = (req, res, next) => {
-  // Ambil bearer token dari headers "authorization"
-  const authHeader = req.headers["authorization"];
-  let token;
+// export const verifyToken = (req, res, next) => {
+//   const authHeader = req.headers["authorization"];
+//   const token = authHeader && authHeader.split(" ")[1];
+//   if (token == null) return res.sendStatus(401);
+//   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+//     if (err) return res.sendStatus(403);
+//     req.user = decoded;
+//     next();
+//   });
+// };
 
-  // Kalau bearer token ada, ambil access token-nya
-  if (authHeader) token = authHeader.split(" ")[1];
+import jwt from "jsonwebtoken"
 
-  // Kalau access token-nya gaada, kirim respons error (401)
-  if (!token) {
-    return res.status(401).json({
-      status: "Error",
-      message: "Token tidak ada",
-    });
-  }
-
-  // Verifikasi access token
-  jwt.verify(
-    token, // <- Token yang akan diverifikasi
-    process.env.ACCESS_TOKEN_SECRET, // <- Secret key dari environment variables
-    (error, decoded) => {
-      // Jika ada error (access token tidak valid/kadaluarsa), kirim respons error
-      if (error) {
-        return res.status(403).json({
-          status: "Error",
-          message: "Access token tidak valid",
-        });
-      }
-
-      // Jika verifikasi berhasil, simpan email dari payload token ke request
-      req.email = decoded.email;
-
-      // Lanjut ke controller berikutnya
-      next();
-    }
-  );
-};
+export const verifyToken = (req, res, next)=>{
+    const authHeader = req.headers['authorization'];
+    console.log("Authorization Header:", req.headers['authorization']);
+    const token = authHeader && authHeader.split(' ')[1];
+    console.log("masuk verify token: ", {token});
+    if(token == null) return res.sendStatus(401);
+    console.log("sudah lewat 401 di verify")
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET,(err, decoded)=>{
+        if(err) return res.sendStatus(403);
+        console.log("sudah lewat 403 di verify")
+        req.user = decoded;
+        next();
+    })
+}
