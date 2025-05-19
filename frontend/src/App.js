@@ -2,6 +2,9 @@ import {BrowserRouter, Routes, Route} from "react-router-dom";
 import NoteList from "./components/NoteList";
 import AddNote from "./components/AddNote";
 import EditNote from "./components/EditNote";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import Navbar from "./components/NavBar";
 
 function App() {
   return (
