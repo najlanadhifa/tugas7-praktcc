@@ -1,14 +1,5 @@
 import Notes from "../models/NoteModel.js";
 
-export const getNotes = async(req, res) => {
-    try {
-        const response = await Notes.findAll(); 
-        res.status(200).json(response);
-    } catch (error) {
-        console.log(error.message);
-    }
-}
-
 export const getNotesbyId = async(req, res) => {
     try {
         const response = await Notes.findOne({
