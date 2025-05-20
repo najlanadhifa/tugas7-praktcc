@@ -1,27 +1,32 @@
 GET http://localhost:5000/notes
-
+Authorization: Bearer 
 ###
+
 GET http://localhost:5000/notes/1
-
+Authorization: Bearer 
 ###
+
 POST http://localhost:5000/notes
 Content-Type: application/json
+Authorization: Bearer 
 
 {
     "nama": "David",
     "judul": "Hari Pertama",
     "isi": "Mohon maaf lahir dan batin"
 }
-
 ###
+
 PATCH http://localhost:5000/notes/1
 Content-Type: application/json
+Authorization: Bearer 
 
 {
     "nama": "Dapidd",
     "judul": "Hari Pertama",
     "isi": "Mohon maaf lahir dan batin"
 }
-
 ###
+
 DELETE http://localhost:5000/notes/2
+Authorization: Bearer 
