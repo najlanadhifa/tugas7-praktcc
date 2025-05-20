@@ -2,8 +2,10 @@ import React, {useState} from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../utils";
+import useAuth from '../auth/useAuth';
 
 const AddNote = () => {
+    const { accessToken, refreshAccessToken } = useAuth();
     const [nama, setNama] = useState("");
     const [judul, setJudul] = useState("");
     const [isi, setIsi] = useState("");
@@ -12,11 +14,15 @@ const AddNote = () => {
     const saveNote = async (e) => {
         e.preventDefault();
         try {
-            await axios.post(`${BASE_URL}/notes`,{
-                nama,
-                judul, 
-                isi
-            });
+            await axios.post(
+                `${BASE_URL}/notes`,
+                { nama, judul, isi },
+                {
+                    headers: {
+                         Authorization: `Bearer ${accessToken}`
+                    }
+                }
+            );
             navigate("/");
         } catch (error) {
             console.log(error);        
