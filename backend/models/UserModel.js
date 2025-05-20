@@ -1,20 +1,18 @@
 import { Sequelize } from "sequelize";
 import db from "../config/Database.js";
 
-const { DataTypes } = Sequelize;
-
-const User = db.define("user", {
-    email: Sequelize.STRING,
+// Membuat tabel "user"
+const User = db.define(
+  "user", // Nama Tabel
+  {
     username: Sequelize.STRING,
     password: Sequelize.STRING,
-    refresh_token: {
-        type: DataTypes.TEXT,  
-        allowNull: true
-    },
-},
-    { freezeTableName: true }
+    refresh_token: Sequelize.TEXT
+  }, {
+    freezeTableName: true
+  }
 );
 
-db.sync({ alter: true }).then(() => console.log("Database User table synchronized"));
+db.sync().then(() => console.log("Database synced"));
 
 export default User;
