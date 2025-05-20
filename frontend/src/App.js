@@ -4,13 +4,15 @@ import AddNote from "./components/AddNote";
 import EditNote from "./components/EditNote";
 import Login from "./components/Login";
 import Register from "./components/Register";
-import Navbar from "./components/NavBar";
 
 function App() {
   return (
     <BrowserRouter>   
     <Routes>
-      <Route path="/" element={<NoteList/>}/>
+      <Route path="/" element={<Login />}/>
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/list" element={<NoteList />} />
       <Route path="add" element={<AddNote/>}/>
       <Route path="edit/:id" element={<EditNote/>}/>
     </Routes>       

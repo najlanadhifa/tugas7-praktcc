@@ -1,7 +1,7 @@
 // // import { useState } from "react";
 // import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; // Import untuk routing
-// import LoginPage from "../components/LoginPage"; // Halaman login
-// import RegisterPage from "../components/RegisterPage";
+// import Login from "../components/Login"; // Halaman login
+// import Register from "../components/Register";
 // import Notes from "../pages/Notes";
 // import ProtectedRoute from "../pages/ProtectedRoute";
 
