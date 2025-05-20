@@ -5,9 +5,6 @@ import { Register, Login, refreshToken, logout } from "../controllers/UserContro
 
 const router = express.Router();
 
-// Endpoint buat ngambil access token menggunakan refresh token
-router.get("/token", getAccessToken);
-
 router.get("/notes", verifyToken, getNotes);
 router.get("/notes/:id", verifyToken, getNotesbyId);
 router.post("/notes", createNote);
