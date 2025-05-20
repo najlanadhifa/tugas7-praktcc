@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../auth/useAuth";
 
-const LoginPage = () => {
+const Login = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
 
@@ -96,4 +96,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default Login;
