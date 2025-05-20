@@ -94,7 +94,7 @@ const UserList = () => {
     const getNotes = async () => {
         setIsLoading(true);
         try {
-            const res = await axios.get(`${BASE_URL}/users`, {
+            const res = await axios.get(`${BASE_URL}/notes`, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`
                 }

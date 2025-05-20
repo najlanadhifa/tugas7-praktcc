@@ -49,7 +49,7 @@ const EditNote = () => {
             try {
                 await refreshAccessToken(); // refresh token
                 // panggil ulang fungsi ini setelah refresh
-                const response = await axios.get(`${BASE_URL}/users/${id}`, {
+                const response = await axios.get(`${BASE_URL}/notes/${id}`, {
                     headers: {
                         Authorization: `Bearer ${accessToken}`
                     }                   
