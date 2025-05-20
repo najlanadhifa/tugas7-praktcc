@@ -1,70 +1,93 @@
-import React, { useState } from "react";
-import axios from "axios";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { BASE_URL } from "../utils";
+import useAuth from "../auth/useAuth";
 
-const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [msg, setMsg] = useState("");
+const LoginPage = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
 
-  const Auth = async (e) => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-    try {
-      await axios.post(`${BASE_URL}/login`, {
-        email: email,
-        password: password,
-      });
+    setError("");
 
-      // Kalo berhasil login
-      navigate("/dashboard");
-    } catch (error) {
-      if (error.response) {
-        setMsg(error.response.data.message);
+    // Logic untuk autentikasi login
+    console.log("Login with", { username, password });
+    try {
+      const result = await login(username, password); // simpan token ke context & cookie
+      if (result) {
+        navigate("/list"); // redirect setelah login
+      } else {
+        alert("Login failed");
       }
+    } catch (error) {
+      console.error("Login Error:", error.response ? error.response.data : error.message);
+      alert("Login failed: " + (error.response ? error.response.data.message : error.message));
     }
   };
 
   return (
-    <section className="hero has-background-grey-light is-fullheight is-fullwidth">
-      <div className="hero-body">
-        <div className="container">
-          <div className="columns is-centered">
-            <div className="column is-4-desktop">
-              <form onSubmit={Auth} className="box">
-                <p className="has-text-centered">{msg}</p>
-                <div className="field mt-5">
-                  <label className="label">Email atau Username</label>
-                  <div className="controls">
+    <section className="section is-fullheight">
+      <div className="container">
+        <div className="columns is-centered">
+          <div className="column is-4-desktop">
+            <div className="box">
+              <h2 className="title is-4 has-text-centered">Login</h2>
+              <form onSubmit={handleLogin}>
+                <div className="field">
+                  <label htmlFor="username" className="label">
+                    Username
+                  </label>
+                  <div className="control">
                     <input
                       type="text"
+                      id="username"
                       className="input"
-                      placeholder="Username"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="Enter username"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                      required
                     />
                   </div>
                 </div>
-                <div className="field mt-5">
-                  <label className="label">Password</label>
-                  <div className="controls">
+
+                <div className="field">
+                  <label htmlFor="password" className="label">
+                    Password
+                  </label>
+                  <div className="control">
                     <input
                       type="password"
+                      id="password"
                       className="input"
-                      placeholder="******"
+                      placeholder="Enter password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
+                      required
                     />
                   </div>
                 </div>
-                <div className="field mt-5">
-                  <button className="button is-success is-fullwidth">
-                    Login
-                  </button>
+
+                <div className="field">
+                  <div className="control">
+                    <button type="submit" className="button is-primary is-fullwidth">
+                      Login
+                    </button>
+                  </div>
                 </div>
-                <Link to="/register">Daftar</Link>
               </form>
+
+              {error && <p className="has-text-danger">{error}</p>}
+
+              <p className="has-text-centered is-size-7 mt-3">
+                Belum punya akun ya?{" "}
+                <Link to="/register" className="has-text-link">
+                  Daftar disini
+                </Link>
+              </p>
             </div>
           </div>
         </div>
@@ -73,4 +96,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginPage;
