@@ -2,19 +2,27 @@ GET http://localhost:5000/notes
 Authorization: Bearer 
 ###
 
-GET http://localhost:5000/notes/1
+GET http://localhost:5000/notes/2
 Authorization: Bearer 
 ###
 
-POST http://localhost:5000/notes
+POST http://localhost:5000/register 
 Content-Type: application/json
-Authorization: Bearer 
-
 {
-    "nama": "David",
-    "judul": "Hari Pertama",
-    "isi": "Mohon maaf lahir dan batin"
+"username": "dapid", 
+"password": "2005", 
+"confirm_password": "2005"
 }
+###   
+
+POST http://localhost:5000/login 
+Content-Type: application/json
+{ 
+    "username": "dapid", 
+    "password": "2005" }
+###
+
+DELETE http://localhost:5000/logout
 ###
 
 PATCH http://localhost:5000/notes/1
@@ -28,5 +36,4 @@ Authorization: Bearer
 }
 ###
 
-DELETE http://localhost:5000/notes/2
-Authorization: Bearer 
+DELETE http://localhost:5000/notes/1
