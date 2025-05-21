@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "http://localhost:5000", // Ganti dengan base URL backend-mu
+  baseURL: "https://notes-be-353267785618.us-central1.run.app", // Ganti dengan base URL backend-mu
   withCredentials: true, // untuk kirim cookie kalau dibutuhkan
 });
 
