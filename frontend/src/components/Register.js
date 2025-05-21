@@ -7,22 +7,23 @@ const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [msg, setMsg] = useState("");
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
-      alert("Password and confirm password do not match!");
+      setMsg("password dan konfirmasi password tidak cocok");
       return;
     }
+
     try {
       const response = await axios.post(
         `${BASE_URL}/register`,
         {
           username,
-          password,
-          confirm_password: confirmPassword,
+          password
         },
         {
           headers: {
@@ -34,7 +35,11 @@ const Register = () => {
         navigate("/login");
       }
     } catch (error) {
-      alert(error);
+      let errMsg = "registrasi gagal. coba lagi yuk.";
+      if (error.response && error.response.data && error.response.data.msg) {
+        errMsg = error.response.data.msg;
+      }
+      setMsg(errMsg);
     }
   };
 
@@ -45,11 +50,19 @@ const Register = () => {
           <div className="column is-4-desktop">
             <div className="box">
               <h2 className="title is-4 has-text-centered">Register</h2>
+              {msg && (
+                <p style={{
+                  color: "#e74c3c",
+                  fontWeight: "bold",
+                  marginBottom: "15px",
+                  textAlign: "center"
+                }}>
+                  {msg}
+                </p>
+              )}
               <form onSubmit={handleRegister}>
                 <div className="field">
-                  <label htmlFor="username" className="label">
-                    Username
-                  </label>
+                  <label htmlFor="username" className="label">Username</label>
                   <div className="control">
                     <input
                       type="text"
@@ -64,9 +77,7 @@ const Register = () => {
                 </div>
 
                 <div className="field">
-                  <label htmlFor="password" className="label">
-                    Password
-                  </label>
+                  <label htmlFor="password" className="label">Password</label>
                   <div className="control">
                     <input
                       type="password"
@@ -81,9 +92,7 @@ const Register = () => {
                 </div>
 
                 <div className="field">
-                  <label htmlFor="confirmPassword" className="label">
-                    Confirm Password
-                  </label>
+                  <label htmlFor="confirmPassword" className="label">Konfirmasi Password</label>
                   <div className="control">
                     <input
                       type="password"
@@ -99,17 +108,39 @@ const Register = () => {
 
                 <div className="field">
                   <div className="control">
-                    <button type="submit" className="button is-primary is-fullwidth">
+                    <button
+                      type="submit"
+                      className="button is-primary is-fullwidth"
+                      style={{
+                        padding: "12px",
+                        borderRadius: "6px",
+                        fontWeight: "bold",
+                        fontSize: "16px",
+                        background: "#2575fc",
+                        color: "white",
+                        marginTop: "10px"
+                      }}
+                    >
                       Register
                     </button>
                   </div>
                 </div>
               </form>
 
-              <p className="has-text-centered is-size-7 mt-3">
-                Sudah Punya Akun?{" "}
-                <Link to="/login" className="has-text-link">
-                  Login Disini
+              <p style={{ textAlign: "center", marginTop: "10px", fontWeight: "bold" }}>
+                Sudah punya akun?{" "}
+                <Link
+                  to="/login"
+                  style={{
+                    color: "#FFD700",
+                    textDecoration: "underline",
+                    fontWeight: "bold",
+                    cursor: "pointer"
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.color = "#FFC300"}
+                  onMouseLeave={e => e.currentTarget.style.color = "#FFD700"}
+                >
+                  Login
                 </Link>
               </p>
             </div>
