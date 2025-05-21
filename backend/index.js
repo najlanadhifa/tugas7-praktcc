@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import UserRoute from "./routes/UserRoute.js";
-import NotesRoute from "./Route/NoteRoute.js";
+import NotesRoute from "./routes/NoteRoute.js";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 
