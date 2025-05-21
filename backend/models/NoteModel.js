@@ -8,7 +8,6 @@ const Notes = db.define('notes', // Nama Tabel
     nama: DataTypes.STRING,
     judul: DataTypes.STRING,
     isi: DataTypes.STRING,
-    userId: DataTypes.INTEGER,
   }
 );
 

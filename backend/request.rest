@@ -1,39 +1,26 @@
-GET https://notes-be-353267785618.us-central1.run.app/notes
-Authorization: Bearer 
-###
+GET http://localhost:5000/notes
 
-GET https://notes-be-353267785618.us-central1.run.app/notes/2
-Authorization: Bearer 
 ###
+GET http://localhost:5000/notes/1
 
-POST https://notes-be-353267785618.us-central1.run.app/register 
+###
+POST http://localhost:5000/login
 Content-Type: application/json
+
 {
-"username": "dapid", 
-"password": "2005", 
-"confirm_password": "2005"
+    "email": "david@gmail",
+    "password": "david"
 }
-###   
 
-POST https://notes-be-353267785618.us-central1.run.app/login 
-Content-Type: application/json
-{ 
-    "username": "dapid", 
-    "password": "2005" }
 ###
-
-DELETE http://localhost:5000/logout
-###
-
 PATCH http://localhost:5000/notes/1
 Content-Type: application/json
-Authorization: Bearer 
 
 {
-    "nama": "Dapidd",
-    "judul": "Hari Pertama",
+    "nama": "Dapidd", 
+    "judul": "Hari Pertama", 
     "isi": "Mohon maaf lahir dan batin"
 }
-###
 
-DELETE http://localhost:5000/notes/1
+###
+DELETE http://localhost:5000/notes/2

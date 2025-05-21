@@ -2,147 +2,158 @@ import User from "../models/UserModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-export const Register = async (req, res) => {
-  const { username, password, confirm_password } = req.body;
-
-  // Password Validation
-  if (password !== confirm_password) {
-    return res.status(400).json({ message: "password tidak sama" });
-  }
-
-  // Hash Password
-  const hashPassword = await bcrypt.hash(password, 5);
-
+async function getUsers(req, res) {
   try {
-    const data = await User.create({
-      username,
-      password: hashPassword,
-    });
-
-    res.status(201).json({
-      message: "user berhasil dibuat!",
-      data,
-    });
+    const response = await User.findAll();
+    res.status(200).json(response);
   } catch (error) {
-    res.status(500).json({
-      message: "oops, terjadi kesalahan",
-      error: error.message,
-    });
+    console.log(error.message);
   }
-};
+}
 
-export const Login = async (req, res) => {
-  const { username, password } = req.body;
-
+async function getUserById(req, res) {
   try {
-    const user = await User.findOne({ where: { username } });
+    const response = await User.findOne({ where: { id: req.params.id } });
+    res.status(200).json(response);
+  } catch (error) {
+    console.log(error.message);
+  }
+}
 
-    if (!user) {
-      return res.status(404).json({ message: "oops, user tidak ditemukan" });
+async function createUser(req, res) {
+  try{
+    const { name, email, password } = req.body;
+    const encryptPassword = await bcrypt.hash(password, 5);
+    await User.create({
+        name: name,
+        email: email,
+        password: encryptPassword
+        
+    });
+    res.status(201).json({msg:"berhasil mendaftar!"});
+} catch(error){
+    console.log(error.message);
+}
+}
+
+async function updateUser(req, res) {
+  try{
+    const { name, email, password} = req.body;
+    let updatedData = {
+      name, email
+    }; 
+
+    if (password) {
+        const encryptPassword = await bcrypt.hash(password, 5);
+        updatedData.password = encryptPassword;
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const result = await User.update(updatedData, {
+        where: {
+            id: req.params.id
+        }
+    });
 
-    if (!isPasswordValid) {
-      return res.status(401).json({ message: "oops, password salah" });
+    if (result[0] === 0) {
+        return res.status(404).json({
+            status: 'failed',
+            message: 'pengguna tidak ditemukan',
+            updatedData: updatedData,
+            result
+        });
     }
 
-    // JWT Sign
-    const accessToken = jwt.sign(
-      { id: user.id, username: user.username },
-      process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "1h" }
-    );
-    const refreshToken = jwt.sign(
-      { id: user.id, username: user.username },
-      process.env.REFRESH_TOKEN_SECRET,
-      { expiresIn: "1d" }
-    );
-
-    await User.update(
-      { refresh_token: refreshToken },
-      { where: { id: user.id } }
-    );
-
-    // Set Cookie
-    res.cookie("refreshToken", refreshToken, {
-      httpOnly: true,
-      maxAge: 24 * 60 * 60 * 1000, // 1 day
-    });
-
-    // Response
-    return res.status(200).json({
-      accessToken,
-      message: "selamat, login berhasil!",
-    });
-  } catch (error) {
-    res.status(500).json({
-      message: "oops, terjadi kesalahan",
-      error: error.message,
-    });
+    res.status(200).json({msg:"User Updated"});
+  } catch(error){
+    console.log(error.message);
   }
-};
+}
 
-export const refreshToken = async (req, res) => {
+async function deleteUser(req, res) {
   try {
-    // Cookie Validation
-    const refreshToken = req.cookies.refreshToken; // Sesuaikan nama cookie
-    if (!refreshToken) return res.sendStatus(401); // Unauthorized
+    await User.destroy({ where: { id: req.params.id } });
+    res.status(201).json({ msg: "User Deleted" });
+  } catch (error) {
+    console.log(error.message);
+  }
+}
 
-    // User Validation
-    const user = await User.findOne({
-      where: { refresh_token: refreshToken },
-    });
-    if (!user) return res.status(403).json({ message: "oops, user tidak ditemukan" });
+async function loginHandler(req, res){
+  try{
+      const{email, password} = req.body;
+      const user = await User.findOne({
+          where : {
+              email: email
+          }
+      });
 
-    // Verify JWT
-    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
-      if (err) {
-        return res.status(403).json({ message: "invalid refresh token" });
+      if(user){
+        const userPlain = user.toJSON(); 
+        const { password: _, refresh_token: __, ...safeUserData } = userPlain;
+
+          const decryptPassword = await bcrypt.compare(password, user.password);
+          if(decryptPassword){
+              const accessToken = jwt.sign(safeUserData, process.env.ACCESS_TOKEN_SECRET, {
+                  expiresIn : '30s' 
+              });
+              const refreshToken = jwt.sign(safeUserData, process.env.REFRESH_TOKEN_SECRET, {
+                  expiresIn : '1d' 
+              });
+              await User.update({refresh_token:refreshToken},{
+                  where:{
+                      id:user.id
+                  }
+              });
+              res.cookie('refreshToken', refreshToken,{
+                  httpOnly : false, 
+                  sameSite : 'none',  
+                  maxAge  : 24*60*60*1000,
+                  secure:true 
+              });
+              res.status(200).json({
+                  status: "Success",
+                  message: "berhasil login",
+                  safeUserData,
+                  accessToken 
+              });
+          }
+          else{
+              res.status(400).json({
+                  status: "Failed",
+                  message: "password atau email salah",
+                
+              });
+          }
+      } else{
+          res.status(400).json({
+              status: "Failed",
+              message: "password atau email salah",
+          });
       }
-
-      const { id, username } = user; // Pastikan data ini sesuai dengan payload JWT sebelumnya
-      const accessToken = jwt.sign(
-        { id, username },
-        process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: "30s" }
-      );
-
-      res.json({ accessToken });
-    });
-  } catch (error) {
-    res.status(500).json({
-      message: "Terjadi Kesalahan",
-      error: error.message,
-    });
+  } catch(error){
+      res.status(error.statusCode || 500).json({
+          status: "error",
+          message: error.message
+      })
   }
-};
+}
 
-export const logout = async (req, res) => {
-  try {
-    const refreshToken = req.cookies.refreshToken; // Sesuaikan nama cookie
-    if (!refreshToken) return res.sendStatus(204); // No Content, berarti user sudah logout
-
-    // User Validation
-    const data = await User.findOne({
-      where: { refresh_token: refreshToken },
-    });
-    if (!data) return res.status(204).json("oops, user tidak ditemukan");
-
-    // Mengupdate refresh token menjadi null
-    await User.update({ refresh_token: null }, { where: { id: data.id } });
-
-    // Menghapus refresh cookie
-    res.clearCookie("refreshToken"); // Sesuaikan nama cookie
-
-    // Response
-    return res.status(200).json({
-      message: "logout berhasil!",
-    });
-  } catch (error) {
-    res.status(500).json({
-      message: "oops, terjadi kesalahan",
-      error: error.message,
-    });
-  }
-};
+async function logout(req,res){
+  const refreshToken = req.cookies.refreshToken; 
+  if(!refreshToken) return res.sendStatus(204);
+  const user = await User.findOne({
+      where:{
+          refresh_token:refreshToken
+      }
+  });
+  if(!user.refresh_token) return res.sendStatus(204);
+  const userId = user.id;
+  await User.update({refresh_token:null},{
+      where:{
+          id:userId
+      }
+  });
+  res.clearCookie('refreshToken'); 
+  return res.sendStatus(200);
+}
+export { getUsers, getUserById, createUser, updateUser, deleteUser, loginHandler, logout};
