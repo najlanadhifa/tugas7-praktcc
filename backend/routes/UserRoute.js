@@ -1,12 +1,18 @@
 import express from "express";
-import { getNotes, getNotesbyId, createNote, updateNote, deleteNote } from "../controllers/NoteController.js";
+import { getUsers, createUser, updateUser, deleteUser, getUserById, loginHandler, logout, } from "../controller/UserController.js";
+import { refreshToken } from "../controller/RefreshToken.js";
+import { verifyToken } from "../middleware/VerifyToken.js";
 
-const router = express.Router();    
+const router = express.Router();
 
-router.get("/notes", getNotes);
-router.get("/notes/:id", getNotesbyId);
-router.post("/notes", createNote);
-router.patch("/notes/:id", updateNote);
-router.delete("/notes/:id", deleteNote);
+router.get("/token", refreshToken);
+router.post("/login", loginHandler);
+router.delete("/logout", logout);
+
+router.post("/register", createUser); 
+router.get("/users", verifyToken, getUsers);
+router.get("/users/:id", verifyToken, getUserById);
+router.put("/edit-user/:id", verifyToken, updateUser);
+router.delete("/delete-user/:id", deleteUser);
 
 export default router;
