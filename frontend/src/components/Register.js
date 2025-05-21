@@ -68,7 +68,7 @@ const Register = () => {
                       type="text"
                       id="username"
                       className="input"
-                      placeholder="Enter username"
+                      placeholder="Masukkan username"
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
                       required
@@ -83,7 +83,7 @@ const Register = () => {
                       type="password"
                       id="password"
                       className="input"
-                      placeholder="Enter password"
+                      placeholder="Masukkan password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       required
@@ -98,7 +98,7 @@ const Register = () => {
                       type="password"
                       id="confirmPassword"
                       className="input"
-                      placeholder="Confirm password"
+                      placeholder="Masukkan password lagi"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       required
@@ -116,8 +116,8 @@ const Register = () => {
                         borderRadius: "6px",
                         fontWeight: "bold",
                         fontSize: "16px",
-                        background: "#2575fc",
-                        color: "white",
+                        background: "#dbba34",
+                        color: "black",
                         marginTop: "10px"
                       }}
                     >
@@ -130,7 +130,7 @@ const Register = () => {
               <p style={{ textAlign: "center", marginTop: "10px", fontWeight: "bold" }}>
                 Sudah punya akun?{" "}
                 <Link
-                  to="/login"
+                  to="/"
                   style={{
                     color: "#FFD700",
                     textDecoration: "underline",

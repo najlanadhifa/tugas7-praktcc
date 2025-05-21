@@ -13,11 +13,14 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      await axios.post(`${BASE_URL}/login`, { email, password });
+      await axios.post(`${BASE_URL}/login`, { 
+          email: email, 
+          password: password 
+        });
 
       navigate('/dashboard');
     } catch (err) {
-      const message = err.response?.data?.msg || 'Login gagal. Periksa kembali data anda.';
+      const message = err.response?.data?.msg || 'login gagal. periksa kembali data anda.';
       setMsg(message);
     }
   };
@@ -28,7 +31,7 @@ const Login = () => {
         <div className="columns is-centered">
           <div className="column is-4-desktop">
             <div className="box">
-              <h2 className="title is-4 has-text-centered">Login</h2>
+              <h2 className="title is-4 has-text-centered">Login My Notes</h2>
 
               {msg && (
                 <p style={{
@@ -48,7 +51,7 @@ const Login = () => {
                     <input
                       type="email"
                       className="input"
-                      placeholder="Email"
+                      placeholder="Masukkan email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
@@ -62,7 +65,7 @@ const Login = () => {
                     <input
                       type="password"
                       className="input"
-                      placeholder="Password"
+                      placeholder="Masukkan Password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       required
@@ -80,8 +83,8 @@ const Login = () => {
                         borderRadius: "6px",
                         fontWeight: "bold",
                         fontSize: "16px",
-                        background: "#3498db",
-                        color: "white",
+                        background: "#dbba34",
+                        color: "black",
                         marginTop: "10px"
                       }}
                     >

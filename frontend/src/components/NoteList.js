@@ -16,7 +16,7 @@ const customStyles = {
     boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)'
   },
   header: {
-    backgroundColor: '#00D1B2',
+    backgroundColor: '#dbba34',
     padding: '1rem',
     color: 'white',
     fontSize: '1.5rem',
@@ -27,14 +27,14 @@ const customStyles = {
     color: '#eaeaea'
   },
   addButton: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#dbba34',
     borderRadius: '25px',
     border: 'none',
     color: 'white',
     fontWeight: '600'
   },
   logoutButton: {
-    backgroundColor: '#FF5C8D',
+    backgroundColor: '#db3f34',
     borderRadius: '25px',
     border: 'none',
     color: 'white',
@@ -128,11 +128,11 @@ const NoteList = () => {
   return (
     <div style={customStyles.container}>
       <div style={customStyles.card}>
-        <div style={customStyles.header}>✍️ My Notes ✍️</div>
+        <div style={customStyles.header}> Selamat Datang di My Notes ✍️</div>
 
         <div style={customStyles.content}>
           <div className="is-flex is-justify-content-space-between mb-4">
-            <Link to={`add`} className="button" style={customStyles.addButton}>
+            <Link to={`/add`} className="button" style={customStyles.addButton}>
               Tambah Note
             </Link>
             <button onClick={handleLogout} className="button" style={customStyles.logoutButton}>

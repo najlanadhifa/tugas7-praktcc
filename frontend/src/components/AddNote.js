@@ -66,7 +66,7 @@ const AddNote = () => {
             </div>
 
             <div className="field has-text-centered mt-4">
-              <button type="submit" className="button is-primary is-rounded">
+              <button type="submit" className="button is-warning is-dark">
                 Simpan
               </button>
             </div>
