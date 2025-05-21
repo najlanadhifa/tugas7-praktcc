@@ -4,177 +4,113 @@ import { useNavigate, Link } from 'react-router-dom';
 import { BASE_URL } from '../utils';
 
 const Login = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [alert, setAlert] = useState({ show: false, type: '', message: '' });
-    const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [msg, setMsg] = useState('');
+  const navigate = useNavigate();
 
-    const handleLogin = async (e) => {
-        e.preventDefault();
+  const handleLogin = async (e) => {
+    e.preventDefault();
 
-        try {
-            await axios.post(`${BASE_URL}/login`, { email, password });
+    try {
+      await axios.post(`${BASE_URL}/login`, { email, password });
 
-            setAlert({
-                show: true,
-                type: 'success',
-                message: 'login berhasil!'
-            });
+      navigate('/dashboard');
+    } catch (err) {
+      const message = err.response?.data?.msg || 'Login gagal. Periksa kembali data anda.';
+      setMsg(message);
+    }
+  };
 
-            setTimeout(() => {
-                navigate('/dashboard');
-            }, 1500);
-        } catch (err) {
-            const message = err.response?.data?.msg || 'login gagal.. periksa kembali data anda.';
-            setAlert({
-                show: true,
-                type: 'error',
-                message
-            });
+  return (
+    <section className="section is-fullheight">
+      <div className="container">
+        <div className="columns is-centered">
+          <div className="column is-4-desktop">
+            <div className="box">
+              <h2 className="title is-4 has-text-centered">Login</h2>
 
-            setTimeout(() => {
-                setAlert({ show: false, type: '', message: '' });
-            }, 3000);
-        }
-    };
+              {msg && (
+                <p style={{
+                  color: "#e74c3c",
+                  fontWeight: "bold",
+                  marginBottom: "15px",
+                  textAlign: "center"
+                }}>
+                  {msg}
+                </p>
+              )}
 
-    // Style
-    const layoutStyle = {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100vh',
-        background: '#f4f6fa'
-    };
+              <form onSubmit={handleLogin}>
+                <div className="field">
+                  <label className="label">Email</label>
+                  <div className="control">
+                    <input
+                      type="email"
+                      className="input"
+                      placeholder="Email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                    />
+                  </div>
+                </div>
 
-    const boxStyle = {
-        width: '400px',
-        padding: '30px',
-        borderRadius: '10px',
-        backgroundColor: '#fff',
-        boxShadow: '0px 8px 20px rgba(0, 0, 0, 0.1)'
-    };
+                <div className="field">
+                  <label className="label">Kata Sandi</label>
+                  <div className="control">
+                    <input
+                      type="password"
+                      className="input"
+                      placeholder="Password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                    />
+                  </div>
+                </div>
 
-    const headingStyle = {
-        fontSize: '24px',
-        fontWeight: '600',
-        marginBottom: '20px',
-        color: '#333',
-        textAlign: 'center'
-    };
-
-    const fieldStyle = {
-        marginBottom: '15px',
-        textAlign: 'left'
-    };
-
-    const labelStyle = {
-        display: 'block',
-        marginBottom: '6px',
-        fontWeight: 'bold',
-        color: '#555'
-    };
-
-    const inputStyle = {
-        width: '100%',
-        padding: '10px',
-        borderRadius: '5px',
-        border: '1px solid #ccc',
-        fontSize: '14px',
-        boxSizing: 'border-box'
-    };
-
-    const btnPrimary = {
-        width: '100%',
-        padding: '12px',
-        backgroundColor: '#3498db',
-        color: 'white',
-        fontWeight: 'bold',
-        fontSize: '15px',
-        border: 'none',
-        borderRadius: '5px',
-        cursor: 'pointer',
-        marginTop: '10px'
-    };
-
-    const btnSecondary = {
-        ...btnPrimary,
-        backgroundColor: '#f1c40f',
-        color: '#333'
-    };
-
-    const alertStyle = {
-        padding: '12px',
-        borderRadius: '6px',
-        marginBottom: '15px',
-        fontWeight: 'bold',
-        fontSize: '14px',
-        textAlign: 'center',
-        color: '#fff'
-    };
-
-    const successStyle = {
-        ...alertStyle,
-        backgroundColor: '#2ecc71'
-    };
-
-    const errorStyle = {
-        ...alertStyle,
-        backgroundColor: '#e74c3c'
-    };
-
-    return (
-        <div style={layoutStyle}>
-            <div style={boxStyle}>
-                <h2 style={headingStyle}>Masuk ke My Notes</h2>
-
-                {alert.show && (
-                    <div style={alert.type === 'success' ? successStyle : errorStyle}>
-                        {alert.message}
-                    </div>
-                )}
-
-                <form onSubmit={handleLogin}>
-                    <div style={fieldStyle}>
-                        <label style={labelStyle}>Email</label>
-                        <input
-                            type="text"
-                            style={inputStyle}
-                            placeholder="davidimhut@email.com"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                    </div>
-
-                    <div style={fieldStyle}>
-                        <label style={labelStyle}>Kata Sandi</label>
-                        <input
-                            type="password"
-                            style={inputStyle}
-                            placeholder="********"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
-                    </div>
-
-                    <button type="submit" style={btnPrimary}>
+                <div className="field">
+                  <div className="control">
+                    <button
+                      type="submit"
+                      className="button is-primary is-fullwidth"
+                      style={{
+                        padding: "12px",
+                        borderRadius: "6px",
+                        fontWeight: "bold",
+                        fontSize: "16px",
+                        background: "#3498db",
+                        color: "white",
+                        marginTop: "10px"
+                      }}
+                    >
                       Login
                     </button>
+                  </div>
+                </div>
+              </form>
 
-                    <div style={{ marginTop: '15px', textAlign: 'center', fontSize: '14px', color: '#555', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px' }}>
-                      <span>Belum punya akun?</span>
-                      <Link to="/register" style={{ textDecoration: 'none' }}>
-                      <button type="button" style={btnSecondary}>
-                        Daftar
-                      </button>
-                      </Link>
-                    </div>
-                </form>
+              <p style={{ textAlign: "center", marginTop: "10px", fontWeight: "bold" }}>
+                Belum punya akun?{" "}
+                <Link
+                  to="/register"
+                  style={{
+                    color: "#f39c12",
+                    textDecoration: "underline",
+                    fontWeight: "bold",
+                    cursor: "pointer"
+                  }}
+                >
+                  Daftar
+                </Link>
+              </p>
             </div>
+          </div>
         </div>
-    );
+      </div>
+    </section>
+  );
 };
 
 export default Login;
