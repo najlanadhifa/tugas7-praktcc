@@ -1,4 +1,4 @@
-GET http://localhost:5000/notes
+GET https://notes-be-353267785618.us-central1.run.app/notes
 Authorization: Bearer 
 ###
 
