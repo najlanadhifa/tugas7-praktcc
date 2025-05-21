@@ -6,30 +6,19 @@ import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 
 const app = express();
-const PORT = process.env.PORT || 5000;
 app.set("view engine", "ejs");
 
 dotenv.config();
 
-const allowedOrigins = [
-  "http://localhost:3000"
-];
-
+app.use(cookieParser());
 app.use(
   cors({
-    origin: allowedOrigins,
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    origin: ["http://localhost:3000", "https://notes-fe-dot-mimetic-sweep-450606-j0.uc.r.appspot.com/"],
   })
 );
-
-app.use(cookieParser());
+app.get("/", (req, res) => res.render("index"));
 app.use(express.json());
-app.use("/api", NotesRoute);
-app.use(UserRoute);
-app.get("/health", (req, res) => {
-  res.status(200).json({ status: "ok", message: "Server is running" });
-});
+app.use(NotesRoute, UserRoute);
 
-app.listen(PORT, ()=> console.log('server berjalan ya ..'));
+app.listen(5000, ()=> console.log('server berjalan ya ..'));
