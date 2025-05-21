@@ -1,5 +1,5 @@
 import express from "express";
-import { getUsers, createUser, updateUser, deleteUser, getUserById, loginHandler, logout, } from "../controller/UserController.js";
+import { getUsers, createUser, updateUser, deleteUser, getUserById, loginHandler, logout, } from "../controllers/UserController.js";
 import { refreshToken } from "../controllers/RefreshToken.js";
 import { verifyToken } from "../middleware/VerifyToken.js";
 
