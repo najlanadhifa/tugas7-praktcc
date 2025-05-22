@@ -1,14 +1,24 @@
-GET http://localhost:5000/user
+GET http://localhost:5000/notes
 
 ###
 GET http://localhost:5000/notes/1
 
 ###
+POST http://localhost:5000/user
+Content-Type: application/json
+
+{
+  "email": "david@gmail.com",
+  "password": "220205"
+}
+
+###
 POST http://localhost:5000/login
 Content-Type: application/json
+
 {
-    "email": "david@gmail",
-    "password": "220205",
+  "email": "david@gmail.com",
+  "password": "220205"
 }
 
 ###
