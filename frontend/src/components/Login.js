@@ -78,6 +78,7 @@ const Login = () => {
                     <button
                       type="submit"
                       className="button is-primary is-fullwidth"
+                      to="/dashboard"
                       style={{
                         padding: "12px",
                         borderRadius: "6px",
