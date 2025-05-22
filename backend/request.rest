@@ -1,4 +1,4 @@
-GET http://localhost:5000/notes
+GET http://localhost:5000/user
 
 ###
 GET http://localhost:5000/notes/1
