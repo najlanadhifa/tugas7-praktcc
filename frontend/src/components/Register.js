@@ -24,7 +24,7 @@ const Register = () => {
           email: email,
           password: password
         });
-        navigate("/login");
+        navigate("/dashboard");
         } catch (error) {
           if (error.response) {
             setMsg(error.response.data.msg);
