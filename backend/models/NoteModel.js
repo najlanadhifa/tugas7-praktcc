@@ -8,9 +8,12 @@ const Notes = db.define('notes', // Nama Tabel
     nama: DataTypes.STRING,
     judul: DataTypes.STRING,
     isi: DataTypes.STRING,
-  }
-);
+  }, {
+    freezeTableName: true
+  });
 
-db.sync().then(() => console.log("Database synced"));
+  export default Notes;
 
-export default Notes;
+(async()=>{
+    await db.sync();
+})();

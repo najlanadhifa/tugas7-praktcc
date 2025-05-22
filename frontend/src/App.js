@@ -7,15 +7,15 @@ import Register from "./components/Register";
 
 function App() {
   return (
-    <BrowserRouter>   
-    <Routes>
-      <Route path="/" element={<Login />}/>
-      <Route path="/register" element={<Register />} />
-      <Route path='/dashboard' element={<NoteList/>}/>
-      <Route path="/add" element={<AddNote/>}/>
-      <Route path="/edit/:id" element={<EditNote/>}/>
-    </Routes>       
-    </BrowserRouter>
+  <BrowserRouter>   
+  <Routes>
+    <Route path="/" element={<Login />}/>
+    <Route path="/register" element={<Register />} />
+    <Route path='/dashboard' element={<NoteList/>}/>
+    <Route path="/add" element={<AddNote/>}/>
+    <Route path="/edit/:id" element={<EditNote/>}/>
+  </Routes>
+  </BrowserRouter>
   );
 }
 

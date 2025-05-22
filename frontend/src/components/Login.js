@@ -9,7 +9,7 @@ const Login = () => {
   const [msg, setMsg] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const Auth = async (e) => {
     e.preventDefault();
 
     try {
@@ -19,11 +19,12 @@ const Login = () => {
         });
 
       navigate('/dashboard');
-    } catch (err) {
-      const message = err.response?.data?.msg || 'login gagal. periksa kembali data anda.';
-      setMsg(message);
+    } catch (error) {
+      if (error.response) {
+        setMsg(error.response.data.msg);
+      }
     }
-  };
+  }
 
   return (
     <section className="section is-fullheight">
@@ -32,7 +33,6 @@ const Login = () => {
           <div className="column is-4-desktop">
             <div className="box">
               <h2 className="title is-4 has-text-centered">Login My Notes</h2>
-
               {msg && (
                 <p style={{
                   color: "#e74c3c",
@@ -44,7 +44,7 @@ const Login = () => {
                 </p>
               )}
 
-              <form onSubmit={handleLogin}>
+              <form onSubmit={Auth}>
                 <div className="field">
                   <label className="label">Email</label>
                   <div className="control">

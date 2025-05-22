@@ -11,21 +11,10 @@ const EditNote = () => {
   const { id } = useParams();
 
   useEffect(() => {
-    fetchNoteById();
+    getNoteById();
   }, []);
 
-  const fetchNoteById = async () => {
-    try {
-      const response = await axios.get(`${BASE_URL}/notes/${id}`);
-      setNama(response.data.nama);
-      setJudul(response.data.judul);
-      setIsi(response.data.isi);
-    } catch (error) {
-      console.error("Gagal mengambil data catatan:", error);
-    }
-  };
-
-  const updateNote = async (e) => {
+    const updateNote = async (e) => {
     e.preventDefault();
     try {
       await axios.patch(`${BASE_URL}/notes/${id}`, {
@@ -35,9 +24,16 @@ const EditNote = () => {
       });
       navigate("/dashboard");
     } catch (error) {
-      console.error("Gagal mengupdate catatan:", error);
+      console.error(error);
     }
-  };
+};
+  
+  const getNoteById = async () => {
+      const response = await axios.get(`${BASE_URL}/notes/${id}`);
+      setNama(response.data.nama);
+      setJudul(response.data.judul);
+      setIsi(response.data.isi);
+    };
 
   return (
     <div className="columns mt-5 is-centered">

@@ -11,12 +11,16 @@ const AddNote = () => {
 
   const saveNote = async (e) => {
     e.preventDefault();
-    await axios.post(`${BASE_URL}/notes`, {
-      nama,
-      judul,
-      isi,
-    });
-    navigate("/dashboard");
+    try {
+        await axios.post(`${BASE_URL}/notes`, {
+            nama,
+            judul,
+            isi,
+        });
+        navigate("/dashboard");
+    } catch (error) {
+        console.log(error);
+    }
   };
 
   return (

@@ -4,44 +4,33 @@ import axios from "axios";
 import { BASE_URL } from "../utils.js";
 
 const Register = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [confPassword, setConfPassword] = useState('');
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
 
-  const handleRegister = async (e) => {
+  const Register = async (e) => {
     e.preventDefault();
-
-    if (password !== confirmPassword) {
-      setMsg("password dan konfirmasi password tidak cocok");
+    if (password !== confPassword) {
+      setMsg("password tidak cocok");
       return;
     }
-
+    
     try {
-      const response = await axios.post(
+      await axios.post(
         `${BASE_URL}/register`,
         {
-          username,
-          password
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
+          email: email,
+          password: password
+        });
+        navigate("/");
+        } catch (error) {
+          if (error.response) {
+            setMsg(error.response.data.msg);
         }
-      );
-      if (response.data.data) {
-        navigate("/login");
       }
-    } catch (error) {
-      let errMsg = "registrasi gagal. coba lagi yuk.";
-      if (error.response && error.response.data && error.response.data.msg) {
-        errMsg = error.response.data.msg;
-      }
-      setMsg(errMsg);
-    }
-  };
+  }
 
   return (
     <section className="section is-fullheight">
@@ -60,17 +49,17 @@ const Register = () => {
                   {msg}
                 </p>
               )}
-              <form onSubmit={handleRegister}>
+              <form onSubmit={Register}>
                 <div className="field">
-                  <label htmlFor="username" className="label">Username</label>
+                  <label htmlFor="email" className="label">Email</label>
                   <div className="control">
                     <input
                       type="text"
-                      id="username"
+                      id="email"
                       className="input"
-                      placeholder="Masukkan username"
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
+                      placeholder="Masukkan email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       required
                     />
                   </div>
@@ -99,8 +88,8 @@ const Register = () => {
                       id="confirmPassword"
                       className="input"
                       placeholder="Masukkan password lagi"
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      value={confPassword}
+                      onChange={(e) => setConfPassword(e.target.value)}
                       required
                     />
                   </div>

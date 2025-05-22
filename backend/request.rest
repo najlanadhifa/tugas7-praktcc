@@ -4,21 +4,11 @@ GET http://localhost:5000/notes
 GET http://localhost:5000/notes/1
 
 ###
-POST https://notes-be-353267785618.us-central1.run.app/register
+POST http://localhost:5000/login
 Content-Type: application/json
 {
-    "username": "davidimhut",
-    "password": "12345",
-    "confirmPassword" : "12345"
-}
-
-###
-POST https://notes-be-353267785618.us-central1.run.app/login
-Content-Type: application/json
-
-{
-    "email": "david@gmail.com",
-    "password": "david"
+    "email": "david",
+    "password": "220205",
 }
 
 ###
