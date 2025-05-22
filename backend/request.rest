@@ -7,7 +7,7 @@ GET http://localhost:5000/notes/1
 POST http://localhost:5000/login
 Content-Type: application/json
 {
-    "email": "david",
+    "email": "david@gmail",
     "password": "220205",
 }
 
